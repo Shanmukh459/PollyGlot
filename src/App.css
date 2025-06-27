@@ -1,0 +1,15 @@
+h1,
+h2,
+p {
+  margin: 0;
+}
+
+.app-container {
+  font-family: "poppins", sans-serif;
+  max-width: 400px;
+  border: 1px solid #ccc;
+  margin: 5vh auto;
+  height: 88vh;
+  display: grid;
+  grid-template-rows: 25% 75%;
+}

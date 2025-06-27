@@ -1,0 +1,68 @@
+.body-container {
+  border: #252f42 solid 0.2rem;
+  border-radius: 2rem;
+  padding: 1rem;
+  margin: 1rem 0.8rem;
+  display: flex;
+  gap: 1rem;
+  flex-direction: column;
+}
+
+.input-section {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.section-title {
+  color: #035a9d;
+  font-weight: bold;
+  font-weight: 1.25rem;
+  text-align: center;
+}
+
+.text-input {
+  border: none;
+  background: #eff0f4;
+  padding: 0.5rem;
+  width: 95%;
+  height: 6rem;
+  align-self: center;
+  resize: none;
+  border-radius: 0.5rem;
+}
+
+.text-input::placeholder {
+  font-weight: 700;
+  font-size: 1rem;
+}
+
+.language-section {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.language-options {
+  font-size: 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding: 0.8rem 2rem;
+}
+
+.translate-section {
+  display: flex;
+}
+
+.translate-btn {
+  background: #035a9d;
+  color: #fff;
+  padding: 0.5rem 1rem;
+  border: none;
+  cursor: pointer;
+  border-radius: 0.5rem;
+  font-weight: 700;
+  font-size: 1.5rem;
+  flex-grow: 1;
+}
