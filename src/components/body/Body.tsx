@@ -1,59 +1,35 @@
 import React, { useState } from "react"
 import "./body.css"
-import OpenAI from "openai"
+import { translateText } from "../../utils/api"
 
 export default function Body() {
   const [inputText, setInputText] = useState<string>("")
   const [showTranslation, setShowTranslation] = useState<boolean>(false)
   const [translatedText, setTranslatedText] = useState<string>("")
+  const [selectedLanguage, setSelectedLanguage] = useState<string>("")
 
-  const handleTranslate = (e) => {
+  const handleTranslate = async (e: React.FormEvent) => {
     e.preventDefault()
     if (!showTranslation) {
-      const selectedLanguage = (
-        document.querySelector(
-          'input[name="language"]:checked'
-        ) as HTMLInputElement
-      ).value
-
-      if (!inputText) {
-        alert("Please enter text to translate.")
+      if (!inputText.trim() || !selectedLanguage) {
+        alert("Please enter text and select a language to translate.")
         return
       }
-
-      if (!selectedLanguage) {
-        alert("Please select a language to translate to.")
+      try {
+        const translation = await translateText(inputText, selectedLanguage)
+        setTranslatedText(translation || "Translation failed.")
+      } catch (error) {
+        console.error("Error during translation:", error)
+        setTranslatedText("Translation failed due to an error.")
         return
       }
-      translateText(inputText, selectedLanguage)
     } else {
+      // Reset the input and translated text when starting over
       setInputText("")
       setTranslatedText("")
     }
+    // Toggle the translation view
     setShowTranslation(!showTranslation)
-  }
-
-  const translateText = async (text: string, language: string) => {
-    const openai = new OpenAI({
-      apiKey: import.meta.env.VITE_OPENAI_API_KEY,
-      dangerouslyAllowBrowser: true,
-    })
-
-    const response = await openai.chat.completions.create({
-      model: "gpt-4.1",
-      messages: [
-        {
-          role: "system",
-          content: "You are a helpful assistant that translates text.",
-        },
-        {
-          role: "user",
-          content: `Translate the following text to ${language}: '${text}' and only return the translation without any additional text.`,
-        },
-      ],
-    })
-    const translated = response.choices[0].message.content.trim()
-    setTranslatedText(translated)
   }
 
   return (
@@ -86,17 +62,16 @@ export default function Body() {
       ) : (
         <div className="language-section">
           <h2 className="section-title">Select language 👇</h2>
-          <div className="language-options">
-            <label>
-              <input type="radio" name="language" value="french" /> French
-            </label>
-            <label>
-              <input type="radio" name="language" value="spanish" /> Spanish
-            </label>
-            <label>
-              <input type="radio" name="language" value="hindi" /> Hindi
-            </label>
-          </div>
+          <select
+            className="language-options"
+            value={selectedLanguage}
+            onChange={(e) => setSelectedLanguage(e.target.value)}
+          >
+            <option value=""></option>
+            <option value="Spanish">Spanish</option>
+            <option value="French">French</option>
+            <option value="Hindi">Hindi</option>
+          </select>
         </div>
       )}
       <div className="translate-section">
